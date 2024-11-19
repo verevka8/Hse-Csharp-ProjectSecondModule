@@ -50,6 +50,9 @@ namespace Project
                         reader.SaveDataToCsv(ReadFileName() + ".csv",data.GetFemaleStudents(),true);
                         break;
                     case 6d:
+                        data.GetSortedData();
+                        break;
+                    case 7d:
                         return;
                 }
             }

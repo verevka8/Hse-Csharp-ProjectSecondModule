@@ -72,12 +72,11 @@
             return GetStudentsByParameter(student => student.Gender, "female");
         }
 
-        public List<Student> GetSortedData()
+        public void GetSortedData()
         {
             List<Student> students = DeepCopy(_students);
-            
-            
-
+            Sort.QuickSortRecursive(students, (student1,student2) => string.Compare(student1.LunchType,student2.LunchType), 0,students.Count -1);
+            Cli.PrintData(students); // TODO: убрать вывод в консоль
         }
         
         private List<Student> GetStudentsByParameter(Func<Student,string> func, string desiredValue)
@@ -103,11 +102,6 @@
             }
 
             return output;
-        }
-
-        private List<T> Sort<T>(List<T> list,Func<Student, bool> compare)
-        {
-            
         }
     }
 }
