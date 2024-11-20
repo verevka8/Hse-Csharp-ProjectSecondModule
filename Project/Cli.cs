@@ -24,31 +24,18 @@ namespace Project
 
         private static void PrintData(List<Student> students, string[] headers,  bool includeAverage = false)
         {
-            string[] studentFields;
-            int[] lenOfColumns = new int[headers.Length];
-            for (int i = 0; i < lenOfColumns.Length; i++)
-            {
-                lenOfColumns[i] = headers[i].Length;
-            }
-            for (int i = 0; i < students.Count; i++)
-            {
-                studentFields = students[i].GetStudentFields(includeAverage);
-                for (int j = 0; j < lenOfColumns.Length; j++)
-                {
-                    lenOfColumns[j] = Math.Max(studentFields[j].Length,lenOfColumns[j]); //TODO: вынести в другой метод
-                }
-            }
-            
+            СalculateСolumnSize(out int[] lenOfColumns, students,headers);
             StringBuilder header = new StringBuilder();
+            
             for (int i = 0; i < lenOfColumns.Length; i++)
             {
                 header.Append(AddSpaces(headers[i], lenOfColumns[i]) + "  ");
             }
             Console.WriteLine("\n" + header);
             
-            for (int i = 0; i < students.Count; i++)
+            foreach (Student student in students)
             {
-                Console.WriteLine(GetStringFormatOfStudent(lenOfColumns, students[i].GetStudentFields(includeAverage))); 
+                Console.WriteLine(GetStringFormatOfStudent(lenOfColumns, student.GetStudentFields(includeAverage)));
             }
             Console.WriteLine();
         }
@@ -68,6 +55,20 @@ namespace Project
         {
             count -= s.Length;
             return new string(' ', count / 2) + s + new string(' ', (count+1)/2);
+        }
+
+        private static void СalculateСolumnSize(out int[] lenOfColumns, List<Student> students, string[] headers)
+        {
+            lenOfColumns = new int[headers.Length];
+            for (int i = 0; i < students.Count; i++)
+            {
+                string[] studentFields = students[i].GetStudentFields();
+                for (int j = 0; j < lenOfColumns.Length; j++)
+                {
+                    lenOfColumns[j] =
+                        Math.Max(studentFields[j].Length, headers[i].Length); //TODO: вынести в другой метод
+                }
+            }
         }
     }
 } 

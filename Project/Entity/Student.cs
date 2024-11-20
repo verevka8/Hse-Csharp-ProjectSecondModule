@@ -46,7 +46,7 @@
             return Math.Min(_mathScore,Math.Min(_readingScore,_writingScore)) == long.MinValue?long.MinValue:(_mathScore + _readingScore + _writingScore) / 3d; 
         }
 
-        public string[] GetStudentFields(bool includeAverage)
+        public string[] GetStudentFields(bool includeAverage = false)
         {
             string[] fields  = new[]
             {

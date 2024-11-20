@@ -109,7 +109,6 @@ namespace Project
             {
                 fields = item.GetStudentFields(includeAverage);
                 csvLines.Append(ConvertDataToString(fields));
-                
             }
 
             File.WriteAllText(fileName, csvLines.ToString(), Encoding.UTF8);
