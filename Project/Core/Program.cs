@@ -1,6 +1,9 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using static Project.Const;
 
 namespace Project
@@ -16,7 +19,7 @@ namespace Project
             while (true)
             {
                 Console.WriteLine(MenuMessage);
-                Data data = new Data(reader.ReadFile());
+                DataAnalyzer dataAnalyzer = new DataAnalyzer(reader.ReadFile());
                 double n = ReadNumber();
                 switch (n)
                 {
@@ -26,34 +29,40 @@ namespace Project
                         ReadFile(out reader);
                         break;
                     case 2d:
-                        Cli.PrintData(data.GetStudentsWithCompletedCourse());
+                        Cli.PrintData(dataAnalyzer.GetStudentsWithCompletedCourse());
                         break;
                     case 2.1d:
-                        reader.SaveDataToCsv("Test_Preparation.csv",data.GetStudentsWithCompletedCourse());
+                        reader.SaveDataToCsv("Test_Preparation.csv",dataAnalyzer.GetStudentsWithCompletedCourse());
                         break;
                     case 3d:
-                        Cli.PrintData(data.GetStudentsWithStandardLunch());
+                        Cli.PrintData(dataAnalyzer.GetStudentsWithStandardLunch());
                         break;
                     case 4.1d:
-                        data.PrintCountOfLine();
+                        Cli.PrintData(dataAnalyzer.GetInfoOfCountCorrectLines());
                         break;
                     case 4.2d:
-                        data.PrintInfoAboutStudentsRace();
+                        Cli.PrintData(dataAnalyzer.GetInfoAboutStudentsRace());
                         break;
                     case 4.3d:
-                        data.PrintInfoAboutStudentsExamResult();
+                        Cli.PrintData(dataAnalyzer.GetInfoAboutStudentsExamResult());
                         break;
                     case 5d:
-                        Cli.PrintData(data.GetFemaleStudents(),true);
+                        Cli.PrintData(dataAnalyzer.GetFemaleStudents(),true);
                         break;
                     case 5.1d:
-                        reader.SaveDataToCsv(ReadFileName() + ".csv",data.GetFemaleStudents(),true);
+                        reader.SaveDataToCsv(ReadFileName() + ".csv",dataAnalyzer.GetFemaleStudents(),true);
                         break;
                     case 6d:
-                        data.GetSortedData();
+                        Cli.PrintDataWithDelta(dataAnalyzer.GetSortedData());
+                        break;
+                    case 6.1d:
+                        reader.SaveDataToCsv("Sorted_Students.csv",dataAnalyzer.GetSortedData());
                         break;
                     case 7d:
                         return;
+                    case 10d:
+                        Cli.PrintData(dataAnalyzer.Students); // убрать
+                        break;
                 }
             }
         }

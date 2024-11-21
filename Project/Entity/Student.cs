@@ -1,4 +1,6 @@
-﻿namespace Project
+﻿using System;
+
+namespace Project
 {
     public class Student
     {

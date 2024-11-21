@@ -1,10 +1,15 @@
-﻿namespace Project
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Project
 {
-    public class Data
+    public class DataAnalyzer
     {
         private List<Student> _students;
+        public List<Student> Students => _students; //TODO: убрать
 
-        public Data(List<Student> students)
+        public DataAnalyzer(List<Student> students)
         {
             _students = students;
         }
@@ -19,12 +24,12 @@
             return GetStudentsByParameter(student => student.LunchType, "standard");
         }
 
-        public void PrintCountOfLine()
+        public string GetInfoOfCountCorrectLines()
         {
-            Console.WriteLine("Количество строк с данными о студентах: " + _students.Count + "\n");
+            return "Количество строк с данными о студентах: " + _students.Count + "\n";
         }
 
-        public void PrintInfoAboutStudentsRace()
+        public string GetInfoAboutStudentsRace()
         {
             Dictionary<string, long> dictionaryOfRace = new Dictionary<string, long>();
             foreach (Student item in _students)
@@ -34,16 +39,19 @@
                     dictionaryOfRace[item.Race] += 1;
                 }
             }
-            Console.WriteLine($"Всего существует {dictionaryOfRace.Count} разных этнических групп:");
+
+            StringBuilder output = new StringBuilder($"Всего существует {dictionaryOfRace.Count} разных этнических групп:\n");
             foreach (string race in dictionaryOfRace.Keys)
             {
-                Console.WriteLine($"\t - Группе {race} принадлежит {dictionaryOfRace[race]} студентов");
+                output.Append($"\t - Группе {race} принадлежит {dictionaryOfRace[race]} студентов\n");
             }
-            Console.WriteLine();
+
+            return output.ToString();
         }
 
-        public void PrintInfoAboutStudentsExamResult()
+        public string GetInfoAboutStudentsExamResult()
         {
+            
             Dictionary<string, long> dictionaryOfExam = new Dictionary<string, long>();
             dictionaryOfExam.Add("math",0);
             dictionaryOfExam.Add("reading",0);
@@ -61,11 +69,14 @@
                 }
             }
 
+            StringBuilder output = new StringBuilder();
             foreach (string nameOfExam in dictionaryOfExam.Keys)
             {
-                Console.WriteLine($"Экзамен по {nameOfExam} написало {dictionaryOfExam[nameOfExam]} студентов на более чем 50 баллов");
+                output.Append(
+                    $"Экзамен по {nameOfExam} написало {dictionaryOfExam[nameOfExam]} студентов на более чем 50 баллов\n");
             }
-            Console.WriteLine();
+
+            return output.ToString();
         }
         public List<Student> GetFemaleStudents()
         {
