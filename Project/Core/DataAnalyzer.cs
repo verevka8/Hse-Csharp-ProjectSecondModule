@@ -7,6 +7,7 @@ namespace Project
     public class DataAnalyzer
     {
         private List<Student> _students;
+
         public List<Student> Students => _students; //TODO: убрать
 
         public DataAnalyzer(List<Student> students)

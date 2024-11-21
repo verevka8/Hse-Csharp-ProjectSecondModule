@@ -7,11 +7,16 @@ using static Project.Const;
 
 namespace Project
 {
-    public class StudentDataIo
+    public class StudentDataInput
     {
         private string _filePath;
+
+        public string FilePath
+        {
+            set => _filePath = value; //TODO: как-то реализовать 
+        }
         
-        public StudentDataIo(string filePath)
+        public StudentDataInput(string filePath)
         {
             _filePath = filePath;
         }
@@ -50,14 +55,15 @@ namespace Project
             student.TestPreparationCourse = data[4];
 
             long temp;
-            ConvertStringToLong(data[5], out temp);
+            bool isNumbersCorrect = true;
+            isNumbersCorrect&=long.TryParse(data[5], out temp);
             student.MathScore = temp;
-            ConvertStringToLong(data[6], out temp);
+            isNumbersCorrect&=long.TryParse(data[6], out temp);
             student.ReadingScore = temp;
-            ConvertStringToLong(data[7], out temp);
+            isNumbersCorrect&=long.TryParse(data[7], out temp); // TODO: доделать, пустота = minvalue, потом ее учитывать как 0 в фильтрах
             student.WritingScore = temp;
 
-            return true;
+            return isNumbersCorrect;
         }
 
         private void IsCorrectFileStructure(string[] lines)
@@ -93,39 +99,6 @@ namespace Project
             }
 
             return true;
-        }
-
-        private void ConvertStringToLong(string input, out long output)
-        {
-            if (!long.TryParse(input, out output))
-            {
-                output = long.MinValue; // служебное значение означающее, что на вход мы получили некорректное значение и далее будем считать, что это поле пустое
-            }
-        }
-
-        public void SaveDataToCsv(string fileName, List<Student> data, bool includeAverage = false)
-        {
-            StringBuilder csvLines = new StringBuilder();
-            csvLines.Append(ConvertDataToString(includeAverage ? DefaultHeadersWithAverage : DefaultHeaders));
-            string[] fields;
-            foreach (Student item in data)
-            {
-                fields = item.GetStudentFields(includeAverage);
-                csvLines.Append(ConvertDataToString(fields));
-            }
-
-            File.WriteAllText(fileName, csvLines.ToString(), Encoding.UTF8);
-        }
-
-        private string ConvertDataToString(string[] data)
-        {
-            StringBuilder output = new StringBuilder();
-            for (int i = 0; i < data.Length; i++)
-            {
-                output.Append("\"" + data[i] + "\"" + (i != data.Length - 1 ? "," : "\n"));
-            }
-
-            return output.ToString();
         }
     }
 }
