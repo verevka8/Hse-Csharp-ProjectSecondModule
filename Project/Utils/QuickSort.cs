@@ -1,62 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Project
+﻿namespace Project.Utils
 {
+    /// <summary>
+    /// Класс, реализующий алгоритм быстрой сортировки (QuickSort) с использованием рекурсии.
+    /// </summary>
     public class QuickSort
     {
-        // public static void QuickSortRecursive<T>(List<T> array, Func<T,T, int> compare, int low, int high)
-        // {
-        //     if (low < high)
-        //     {
-        //         int index = Pivot(array, compare, low, high);
-        //         QuickSortRecursive(array, compare, low, index- 1);
-        //         QuickSortRecursive(array, compare, index + 1, high);
-        //     }
-        // }
-        //
-        // private static int Pivot<T>(List<T> array, Func<T, T, int> compare, int low, int high)
-        // {
-        //     int ind = low-1;
-        //     for (int i = low+1; i <= high; i++)
-        //     {
-        //         if (compare(array[i], array[high]) <= 0) // i-й элемент меньше или равен чем high-й элемент
-        //         {
-        //             ind += 1;
-        //             (array[i], array[ind]) = (array[ind], array[i]);
-        //         }
-        //     }
-        //
-        //     (array[ind + 1], array[high]) = (array[high], array[ind + 1]);
-        //     return ind + 1;
-        // }
-        
-       
-           public static void QuickSortRecursive<T>(List<T> list, Func<T,T, int> compare, int left, int right)
-           {
-               if (left < right)
-               {
-                   int pivotIndex = Pivot(list, compare, left, right);
-                   QuickSortRecursive(list, compare, left, pivotIndex - 1);
-                   QuickSortRecursive(list, compare, pivotIndex + 1, right);
-               }
-           }
+        /// <summary>
+        /// Выполняет сортировку списка с использованием алгоритма QuickSort.
+        /// </summary>
+        /// <typeparam name="T">Тип элементов списка.</typeparam>
+        /// <param name="list">Список, который необходимо отсортировать.</param>
+        /// <param name="compare">Функция сравнения двух элементов списка.</param>
+        /// <param name="left">Индекс начала диапазона сортировки.</param>
+        /// <param name="right">Индекс конца диапазона сортировки.</param>
+        public static void QuickSortRecursive<T>(List<T> list, Func<T, T, int> compare, int left, int right)
+        {
+            if (left < right)
+            {
+                // Находим индекс опорного элемента после разделения
+                int pivotIndex = Pivot(list, compare, left, right);
 
-           private static int Pivot<T>(List<T> list, Func<T,T, int> compare, int left, int right)
-           {
-               T pivot = list[right];
-               int low = left - 1;
-               for (int i = left; i < right; i++)
-               {
-                   if (compare(list[i], pivot) <= 0)
-                   {
-                       low++;
-                       (list[i], list[low]) = (list[low], list[i]);
-                   }
-               }
-               (list[low+1], list[right]) = (list[right], list[low+1]);
-               
-               return low + 1;
-           }
+                // Рекурсивно сортируем левую и правую части списка
+                QuickSortRecursive(list, compare, left, pivotIndex - 1);
+                QuickSortRecursive(list, compare, pivotIndex + 1, right);
+            }
+        }
+
+        /// <summary>
+        /// Определяет опорный элемент и перемещает элементы меньше опорного влево, а большие вправо
+        /// </summary>
+        /// <typeparam name="T">Тип элементов списка.</typeparam>
+        /// <param name="list">Список, который сортируется.</param>
+        /// <param name="compare">Функция сравнения двух элементов списка.</param>
+        /// <param name="left">Индекс начала диапазона.</param>
+        /// <param name="right">Индекс конца диапазона.</param>
+        /// <returns>Индекс нового положения опорного элемента.</returns>
+        private static int Pivot<T>(List<T> list, Func<T, T, int> compare, int left, int right)
+        {
+            // Выбираем последний элемент как опорный
+            T pivot = list[right];
+            int low = left - 1;
+
+            // Перемещаем элементы меньше опорного влево
+            for (int i = left; i < right; i++)
+            {
+                if (compare(list[i], pivot) <= 0)
+                {
+                    low++;
+                    // Меняем местами текущий элемент и элемент с индексом low
+                    (list[i], list[low]) = (list[low], list[i]);
+                }
+            }
+
+            // Перемещаем опорный элемент на правильную позицию
+            (list[low + 1], list[right]) = (list[right], list[low + 1]);
+
+            return low + 1;
+        }
     }
 }

@@ -1,5 +1,8 @@
-﻿namespace Project
+﻿namespace Project.Utils
 {
+    /// <summary>
+    /// Класс констант
+    /// </summary>
     public static class Const
     {
         public const string StartMessage = "Для работы со справочной системой, введите путь до файла с данными:";
@@ -25,7 +28,9 @@
             "gender", "race/Ethnicity", "parental level of education", "lunch",
             "test preparation course", "math score","reading score","writing score", "average"
         ];
-        public const int CountOfCommands = 1000; //TODO: переделать, так как не совсем корректно работает из-за дробных пунктов
-        public const int CountOfColumns = 8; // TODO: подумать над тем, чтобы убрать
+
+        public const int CountOfColumns = 8;
+        public static readonly double[] Commands = [1, 2, 2.1, 3, 4.1, 4.2, 4.3, 5, 5.1, 6, 6.1, 7]; // список всех комманд 
+        
     }
 }
