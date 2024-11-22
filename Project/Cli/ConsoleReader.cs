@@ -14,14 +14,12 @@ namespace Project.Cli
 
             return input;
         }
-
         
-
         public static string ReadFileName()
         {
             Console.WriteLine("Введите название файла:");
-            string fileName = Console.ReadLine();
-            while (!Regex.IsMatch(fileName, "^[0-9a-zA-Zа-яА-Я.,!@%&*]+$"))
+            string? fileName = Console.ReadLine();
+            while (fileName == null || !Regex.IsMatch(fileName, "^[0-9a-zA-Zа-яА-Я.,!@%&*]+$"))
             {
                 Console.WriteLine("Введите корректное название файла, используя русские и латинские буквы, цифры и знаки: !,.@%&*");
                 fileName = Console.ReadLine();
@@ -32,8 +30,13 @@ namespace Project.Cli
 
         public static string ReadFilePath()
         {
-            // регулярку впихнуть
-            return Console.ReadLine();
+            string? filePath = Console.ReadLine();
+            while (string.IsNullOrWhiteSpace(filePath))
+            {
+                Console.WriteLine("Введите корректный путь до файла:");
+                filePath = Console.ReadLine();
+            }
+            return filePath;
         }
     }
 }

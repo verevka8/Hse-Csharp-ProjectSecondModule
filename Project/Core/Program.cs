@@ -13,9 +13,8 @@ namespace Project
     {
         public static void Main(string[] args)
         {
-            
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-Us");
-            Console.WriteLine(StartMessage);
+            DataPrinter.PrintData(StartMessage);
             
             StudentDataOutput dataOutput = new StudentDataOutput();
             DataAnalyzer dataAnalyzer = new DataAnalyzer(ReadFile());
@@ -29,7 +28,7 @@ namespace Project
                     case 1d:
                         Console.Clear();
                         Console.WriteLine(StartMessage);
-                        dataAnalyzer = new DataAnalyzer(ReadFile()); // изменить на set
+                        dataAnalyzer.Students = ReadFile(); 
                         break;
                     case 2d:
                         DataPrinter.PrintData(dataAnalyzer.GetStudentsWithCompletedCourse());
@@ -56,7 +55,8 @@ namespace Project
                         dataOutput.SaveDataToCsv(ConsoleReader.ReadFileName() + ".csv",dataAnalyzer.GetFemaleStudents(),true);
                         break;
                     case 6d:
-                        DataPrinter.PrintDataWithDelta(dataAnalyzer.GetSortedData());
+                        (List<Student> sortedStudents, Dictionary<string, long> deltaInfo)  = dataAnalyzer.GetSortedDataWithDelta();
+                        DataPrinter.PrintDataWithDelta(sortedStudents,deltaInfo);
                         break;
                     case 6.1d:
                         dataOutput.SaveDataToCsv("Sorted_Students.csv",dataAnalyzer.GetSortedData());

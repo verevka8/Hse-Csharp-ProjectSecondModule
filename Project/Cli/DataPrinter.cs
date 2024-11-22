@@ -48,25 +48,9 @@ namespace Project
             Console.WriteLine();
         }
         
-        public static void PrintDataWithDelta(List<Student> sortedStudents)
+        public static void PrintDataWithDelta(List<Student> sortedStudents,Dictionary<string,long> dictionaryWithDeltaOfEachGroup)
         {
             DataFormatter.СalculateСolumnSize(out int[] lenOfColumns, sortedStudents,DefaultHeaders);
-            int saveIndexOfMinimum = 0;
-            
-            Dictionary<string, long> dictionary = new Dictionary<string, long>();
-            dictionary.Add(sortedStudents[0].LunchType,0);
-            
-            for (int i = 0; i < sortedStudents.Count-1; i++)
-            {
-                if (!dictionary.ContainsKey(sortedStudents[i+1].LunchType))
-                {
-                    dictionary[sortedStudents[i].LunchType] = sortedStudents[i].MathScore - sortedStudents[saveIndexOfMinimum].MathScore; //TODO: вынести в другой класс
-                    saveIndexOfMinimum = i+1;
-                    dictionary.Add(sortedStudents[i+1].LunchType,0);
-                }
-            }
-            dictionary[sortedStudents[^1].LunchType] = sortedStudents[^1].MathScore - sortedStudents[saveIndexOfMinimum].MathScore;
-            
             StringBuilder header = new StringBuilder();
             
             for (int i = 0; i < lenOfColumns.Length; i++)
@@ -80,7 +64,7 @@ namespace Project
             {
                 if (sortedStudents[i].LunchType != currentLucnhType)
                 {
-                    Console.WriteLine($"\nВ выборке с LunchType: \"{sortedStudents[i].LunchType}\" - разница между максимальным и минимальным результатом по математике составляет: {dictionary[sortedStudents[i].LunchType]}.");
+                    Console.WriteLine($"\nВ выборке с LunchType: \"{sortedStudents[i].LunchType}\" - разница между максимальным и минимальным результатом по математике составляет: {dictionaryWithDeltaOfEachGroup[sortedStudents[i].LunchType]}.");
                     currentLucnhType = sortedStudents[i].LunchType;
                 }
                 Console.WriteLine(DataFormatter.GetStringFormatOfStudent(lenOfColumns, sortedStudents[i].GetStudentFields()));

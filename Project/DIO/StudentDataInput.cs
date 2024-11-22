@@ -24,7 +24,9 @@ namespace Project
         public List<Student> ReadFile()
         {
             List<Student> students = new List<Student>();
-            string[] lines = File.ReadAllLines(_filePath);
+            // string[] lines = File.ReadAllLines(_filePath);
+            StreamReader reader = new StreamReader(_filePath);
+            string[] lines = reader.ReadToEnd().Split("\n");
             IsCorrectFileStructure(lines);
             for (int i = 1; i < lines.Length; i++)
             {

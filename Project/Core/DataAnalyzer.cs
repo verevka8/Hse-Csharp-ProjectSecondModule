@@ -7,8 +7,12 @@ namespace Project
     public class DataAnalyzer
     {
         private List<Student> _students;
-
-        public List<Student> Students => _students; //TODO: убрать
+        
+        public List<Student> Students
+        {
+            set => _students = DeepCopy(value);
+            get => _students; //TODO: убрать
+        }
 
         public DataAnalyzer(List<Student> students)
         {
@@ -84,6 +88,12 @@ namespace Project
             return GetStudentsByParameter(student => student.Gender, "female");
         }
 
+        public (List<Student> sortedStudents,Dictionary<string,long> deltaInfo) GetSortedDataWithDelta()
+        {
+            List<Student> students = GetSortedData();
+            return (students,GetInfoOfDeltaEachGroup(students));
+        }
+
         public List<Student> GetSortedData()
         {
             List<Student> students = DeepCopy(_students);
@@ -94,6 +104,25 @@ namespace Project
                 
             }, 0,students.Count -1);
             return students;
+        }
+
+        private Dictionary<string, long> GetInfoOfDeltaEachGroup(List<Student> students)
+        {
+            int saveIndexOfMinimum = 0;
+            Dictionary<string, long> dictionary = new Dictionary<string, long>();
+            dictionary.Add(students[0].LunchType,0);
+                        
+            for (int i = 0; i < students.Count-1; i++)
+            {
+                if (!dictionary.ContainsKey(students[i+1].LunchType))
+                {
+                    dictionary[students[i].LunchType] = students[i].MathScore - students[saveIndexOfMinimum].MathScore;
+                    saveIndexOfMinimum = i+1;
+                    dictionary.Add(students[i+1].LunchType,0);
+                }
+            }
+            dictionary[students[^1].LunchType] = students[^1].MathScore - students[saveIndexOfMinimum].MathScore;
+            return dictionary;
         }
         
         private List<Student> GetStudentsByParameter(Func<Student,string> func, string desiredValue)
